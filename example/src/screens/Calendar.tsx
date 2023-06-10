@@ -1,5 +1,6 @@
 import {
   EventItem,
+  eventType,
   HighlightDates,
   MomentConfig,
   OnChangeProps,
@@ -130,6 +131,7 @@ const Calendar = ({ route, navigation }: CalendarProps) => {
       start: event.start,
       end: event.end,
       color: randLightColor(),
+      type: eventType.AVAILABLE,
       containerStyle: { borderColor: randColor(), borderWidth: 1 },
     };
     setEvents((prev) => [...prev, newEvent]);
@@ -143,11 +145,33 @@ const Calendar = ({ route, navigation }: CalendarProps) => {
     setSelectedEvent(undefined);
   };
 
-  const _onPressSubmit = () => {
+  const _onPressAvailableSubmit = () => {
     setEvents((prevEvents) =>
       prevEvents.map((ev) => {
         if (ev.id === selectedEvent?.id) {
-          return { ...ev, ...selectedEvent };
+          return {
+            ...ev,
+            ...selectedEvent,
+            type: eventType.AVAILABLE,
+            color: 'yellow',
+          };
+        }
+        return ev;
+      })
+    );
+    setSelectedEvent(undefined);
+  };
+
+  const _onPressNormalSubmit = () => {
+    setEvents((prevEvents) =>
+      prevEvents.map((ev) => {
+        if (ev.id === selectedEvent?.id) {
+          return {
+            ...ev,
+            ...selectedEvent,
+            type: eventType.INVITATION,
+            color: 'purple',
+          };
         }
         return ev;
       })
@@ -161,8 +185,14 @@ const Calendar = ({ route, navigation }: CalendarProps) => {
         <TouchableOpacity style={styles.button} onPress={_onPressCancel}>
           <Text style={styles.btnText}>Cancel</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={_onPressSubmit}>
-          <Text style={styles.btnText}>Save</Text>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={_onPressAvailableSubmit}
+        >
+          <Text style={styles.btnText}>Available</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={_onPressNormalSubmit}>
+          <Text style={styles.btnText}>normal</Text>
         </TouchableOpacity>
       </View>
     );
