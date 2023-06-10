@@ -405,6 +405,12 @@ export type UnavailableHoursStyle = Record<
   }[]
 >;
 
+export enum eventType {
+  INVITATION = `invitation`,
+  AVAILABLE = `available`,
+  SCHEDULED = `scheduled`,
+}
+
 export interface EventItem {
   /** Unique ID for the event. */
   id: string;
@@ -416,6 +422,9 @@ export interface EventItem {
   title?: string;
   /** Background color of the event */
   color?: string;
+
+  type?: eventType;
+
   /** Container style of the event */
   containerStyle?: StyleProp<ViewStyle>;
   [key: string]: any;

@@ -2,7 +2,7 @@ import { merge } from 'lodash';
 import moment, { Moment } from 'moment-timezone';
 import { Platform } from 'react-native';
 import { DEFAULT_PROPS, SECONDS_IN_DAY } from './constants';
-import type { EventItem, PackedEvent, ThemeProperties } from './types';
+import { EventItem, eventType, PackedEvent, ThemeProperties } from './types';
 
 type DateData = { data: string[]; index: number };
 
@@ -142,6 +142,10 @@ export const groupEventsByDate = (
 };
 
 const hasCollision = (a: EventItem, b: EventItem) => {
+  if (a.type === eventType.AVAILABLE || b.type === eventType.AVAILABLE) {
+    return false;
+  }
+
   return a.end > b.start && a.start < b.end;
 };
 
@@ -238,6 +242,10 @@ export const populateEvents = (
   let calculatedEvents: PackedEvent[] = [];
   const cloneEvents = [...events];
   const sortedEvents = cloneEvents.sort((a, b) => {
+    if (a.type !== eventType.AVAILABLE && b.type === eventType.AVAILABLE) {
+      return 1;
+    }
+
     if (a.start < b.start) {
       return -1;
     }
