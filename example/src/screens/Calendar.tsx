@@ -9,7 +9,7 @@ import {
   TimelineCalendar,
   TimelineCalendarHandle,
   UnavailableItemProps,
-} from '@howljs/calendar-kit';
+} from '@woody/calendar-kit';
 import type { NavigationProp, RouteProp } from '@react-navigation/native';
 import dayjs from 'dayjs';
 import React, {
